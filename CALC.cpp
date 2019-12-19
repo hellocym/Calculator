@@ -29,25 +29,35 @@ int grade(string x){
 }
 
 void op_push(string x){
-	//cout << x << " ";
-	if(op.empty() || op.top() == "("){//op为空或op顶为( 
+	/*if(!op.empty())
+		cout << op.size() << " " << endl;
+	else
+		cout << "empty" << endl;*/
+	if(op.empty() || (op.top() == "(")){//op为空或op顶为(
+		//cout << op.top() << " " << endl;
 		op.push(x);
 		return;
 	}
-	while(grade(x) <= grade(op.top())){//op顶为运算符 
-		//cout << op.top() << " ";
+	while(!op.empty()){//op顶为运算符
+		if(!(grade(x) <= grade(op.top())))
+			break;
+		//cout << op.top() << " " << endl;
+		//cout << grade(op.top()) << endl;
+	
 		num.push(op.top());
 		op.pop();
 	}
 	op.push(x);
+	
 	//cout << op.top() << " ";
 }
 
 int main(){
-	//op.push('@');//栈底 
+//op.push('@');//栈底
 	cin >> s;
 	string tmp = "";
 	for(int i = 0; i <= s.length() - 1; i++){
+		//cout << i << " ";
 		if(s[i] >= '0' && s[i] <= '9'){
 			tmp += s[i];
 			if(i == s.length() - 1){
@@ -69,19 +79,23 @@ int main(){
 			}
 			bkt_pop();
 		}
-		else{//+-*/
+				
+		else{//+*-/
 			if(!tmp.empty()){
 				num.push(tmp);
 				tmp = "";
 			}
-			
 			string op_push_tmp = "";
 			op_push_tmp += s[i];
-			//cout << op_push_tmp << endl;
+			//cout << op_push_tmp << " ";
+			//cout << (op.empty() || op.top() == "(") << endl;
 			op_push(op_push_tmp);
 			//cout << op.top() << " ";
 		}
+		//cout << endl;
+	
 	}
+	
 	while(!op.empty()){
 		if(op.top()!="(")
 			num.push(op.top());
@@ -95,7 +109,7 @@ int main(){
 		cout << rvs_tmp.top() << " ";
 		rvs_tmp.pop();
 	}
+	
 	cout << endl;
 	return 0;
 }
-		
